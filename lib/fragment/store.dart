@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:reader_flutter/constants.dart';
+import 'package:reader_flutter/fragment/category.dart';
+import 'package:reader_flutter/fragment/sex.dart';
+import 'package:reader_flutter/fragment/list.dart';
+import 'package:reader_flutter/fragment/special.dart';
 
 class BookStore extends StatefulWidget {
   @override
@@ -7,17 +12,18 @@ class BookStore extends StatefulWidget {
 
 class _BookStoreState extends State<BookStore>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  TabController _tabController;
+  List<String> _tabTitles = ["男生", "女生", "分类", "专题", "榜单"];
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this);
+    _tabController = TabController(length: _tabTitles.length, vsync: this);
     super.initState();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -26,8 +32,29 @@ class _BookStoreState extends State<BookStore>
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("书城"),
+        title: Container(
+          child: TabBar(
+            controller: _tabController,
+            tabs: _tabTitles.map((title) {
+              return Tab(text: title);
+            }).toList(),
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(MyIcons.searchIcon),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/search');
+              })
+        ],
       ),
+      body: TabBarView(controller: _tabController, children: [
+        SexPage("man"),
+        SexPage("lady"),
+        CategoryPage(),
+        SpecialPage(),
+        ListPage(),
+      ]),
     );
   }
 }

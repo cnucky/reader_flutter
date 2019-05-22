@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reader_flutter/fragment/acount.dart';
+import 'package:reader_flutter/page/acount.dart';
 import 'package:reader_flutter/page/home.dart';
+import 'package:reader_flutter/page/search.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
       home: HomePage(),
       routes: <String, WidgetBuilder>{
         '/home': (_) => HomePage(),
-        '/acount': (_) => AcountPage()
+        '/acount': (_) => AcountPage(),
+        '/search': (_) => SearchPage(),
       },
     );
   }

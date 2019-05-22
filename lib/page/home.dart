@@ -80,6 +80,7 @@ class _HomePageState extends State<HomePage>
         itemBuilder: (BuildContext context, int index) {
           return _pages[index];
         },
+        physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         itemCount: _pages.length,
         onPageChanged: (int index) {
