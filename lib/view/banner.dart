@@ -14,9 +14,6 @@ Widget bannerWidget(List<MyBanner> imgs) {
           : CachedNetworkImage(
               fit: BoxFit.cover,
               imageUrl: data.imgurl,
-              placeholder: (context, url) => CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
             );
     },
     onBannerClickListener: (index, data) {},
