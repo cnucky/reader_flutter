@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:reader_flutter/constants.dart';
-import 'package:reader_flutter/fragment/found.dart';
 import 'package:reader_flutter/fragment/rank.dart';
 import 'package:reader_flutter/fragment/shelf.dart';
 import 'package:reader_flutter/fragment/store.dart';
+import 'package:reader_flutter/util/constants.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,8 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   var _currentIndex = 0;
   List<NavigationIconView> _navigationViews;
   List<Widget> _pages;
@@ -21,6 +19,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
+    super.initState();
     _navigationViews = [
       NavigationIconView(
         title: '书架',
@@ -37,24 +36,23 @@ class _HomePageState extends State<HomePage>
         iconData: MyIcons.rankIcon,
         activeIconData: MyIcons.rankIcon,
       ),
-      NavigationIconView(
-        title: '发现',
-        iconData: MyIcons.foundIcon,
-        activeIconData: MyIcons.foundIcon,
-      )
+//      NavigationIconView(
+//        title: '发现',
+//        iconData: MyIcons.foundIcon,
+//        activeIconData: MyIcons.foundIcon,
+//      )
     ];
     _pages = [
       BookShelf(),
       BookStore(),
       BookRank(),
-      Found(),
+//      FoundPage(),
     ];
     _pageController = PageController(initialPage: _currentIndex);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -64,8 +62,8 @@ class _HomePageState extends State<HomePage>
       items: _navigationViews.map((NavigationIconView view) {
         return view.item;
       }).toList(),
-      fixedColor: AppColors.TabIconActive,
       currentIndex: _currentIndex,
+      fixedColor: AppColors.TabActive,
       type: BottomNavigationBarType.fixed,
       onTap: (int index) {
         setState(() {
@@ -92,6 +90,9 @@ class _HomePageState extends State<HomePage>
       bottomNavigationBar: botNavBar,
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class NavigationIconView {
@@ -100,12 +101,11 @@ class NavigationIconView {
   NavigationIconView(
       {Key key, String title, IconData iconData, IconData activeIconData})
       : item = BottomNavigationBarItem(
-          icon: Icon(iconData),
-          activeIcon: Icon(
-            activeIconData,
-            color: AppColors.TabIconActive,
+          icon: Icon(
+            iconData,
+            color: AppColors.TabNormal,
           ),
-          backgroundColor: Colors.white,
+          activeIcon: Icon(activeIconData),
           title: Text(title),
         );
 }

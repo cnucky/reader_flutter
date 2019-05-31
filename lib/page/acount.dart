@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reader_flutter/constants.dart';
 
 class AcountPage extends StatefulWidget {
   @override
@@ -7,18 +6,14 @@ class AcountPage extends StatefulWidget {
 }
 
 class _AcountPageState extends State<AcountPage>
-    with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-
+    with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
-    _controller = AnimationController(vsync: this);
     super.initState();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -28,12 +23,10 @@ class _AcountPageState extends State<AcountPage>
       appBar: AppBar(
         title: Text("我的"),
         centerTitle: true,
-        leading: IconButton(
-            icon: Icon(MyIcons.backIcon),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

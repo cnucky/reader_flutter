@@ -1,4 +1,6 @@
-import 'package:reader_flutter/util.dart';
+import 'package:path/path.dart';
+import 'package:reader_flutter/util/util.dart';
+import 'package:sqflite/sqflite.dart';
 
 /// status : 1
 /// info : "success"
@@ -31,31 +33,213 @@ import 'package:reader_flutter/util.dart';
 /// CName : "玄幻奇幻"
 /// UpdateTime : "2019-05-19 00:00:00"
 
+final String tableBook = 'book';
+final String columnId = 'Id';
+final String columnName = 'Name';
+final String columnAuthor = 'Author';
+final String columnImg = 'Img';
+final String columnDesc = 'Desc';
+final String columnBookStatus = 'BookStatus';
+final String columnLastChapterId = 'LastChapterId';
+final String columnLastChapter = 'LastChapter';
+final String columnCName = 'CName';
+final String columnUpdateTime = 'UpdateTime';
+final String columnPosition = 'Positon';
+
 class Book {
-  String Id;
-  String Name;
-  String Author;
-  String Img;
-  String Desc;
-  String BookStatus;
-  String LastChapterId;
-  String LastChapter;
-  String CName;
-  String UpdateTime;
+  int id;
+  int position;
+  String name;
+  String author;
+  String img;
+  String desc;
+  String bookStatus;
+  String lastChapterId;
+  String lastChapter;
+  String cname;
+  String updateTime;
 
   static Book fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
-    Book dataBean = Book();
-    dataBean.Id = map['Id'].toString();
-    dataBean.Name = map['Name'];
-    dataBean.Author = map['Author'];
-    dataBean.Img = getCompleteImgUrl(map['Img'].toString());
-    dataBean.Desc = map['Desc'];
-    dataBean.BookStatus = map['BookStatus'] ?? "";
-    dataBean.LastChapterId = map['LastChapterId'] ?? "";
-    dataBean.LastChapter = map['LastChapter'] ?? "";
-    dataBean.CName = map['CName'];
-    dataBean.UpdateTime = map['UpdateTime'];
-    return dataBean;
+    Book book = Book();
+    book.id = int.parse(map['Id'].toString());
+    book.position = map['Positon'] ?? 0;
+    book.name = map['Name'] ?? "";
+    book.author = map['Author'] ?? "";
+    book.img = getCompleteImgUrl(map['Img'].toString()) ?? "";
+    book.desc = map['Desc'] ?? "";
+    book.bookStatus = map['BookStatus'] ?? "";
+    book.lastChapterId = map['LastChapterId'] ?? "";
+    book.lastChapter = map['LastChapter'] ?? "";
+    book.cname = map['CName'] ?? "";
+    book.updateTime = map['UpdateTime'] ?? "";
+    return book;
+  }
+
+  static Book fromListDetailMap(Map<String, dynamic> map) {
+    if (map == null) return null;
+    Book book = Book();
+    book.id = int.parse(map['BookId'].toString());
+    book.position = map['Positon'] ?? 0;
+    book.name = map['BookName'] ?? "";
+    book.author = map['Author'] ?? "";
+    book.img = getCompleteImgUrl(map['BookImage'].toString()) ?? "";
+    book.desc = map['Description'] ?? "";
+    book.bookStatus = "";
+    book.lastChapterId = "";
+    book.lastChapter = "";
+    book.cname = map['CategoryName'] ?? "";
+    book.updateTime = "";
+    return book;
+  }
+
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      columnName: name,
+      columnAuthor: author,
+      columnImg: img,
+      columnDesc: desc,
+      columnBookStatus: bookStatus,
+      columnLastChapterId: lastChapterId,
+      columnLastChapter: lastChapter,
+      columnCName: cname,
+      columnUpdateTime: updateTime,
+      columnPosition: position,
+    };
+    if (id != null) {
+      map[columnId] = id;
+    }
+    return map;
+  }
+}
+
+class BookSqlite {
+  Database db;
+
+  openSqlite() async {
+    // 获取数据库文件的存储路径
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'book.db');
+
+//根据数据库文件路径和数据库版本号创建数据库表
+    db = await openDatabase(path, version: 1,
+        onCreate: (Database db, int version) async {
+          await db.execute('''
+          CREATE TABLE $tableBook (
+            $columnId INTEGER PRIMARY KEY, 
+            $columnPosition INTEGER,
+            $columnName TEXT, 
+            $columnAuthor TEXT, 
+            $columnImg TEXT, 
+            $columnDesc TEXT,
+            $columnBookStatus TEXT, 
+            $columnLastChapterId TEXT, 
+            $columnLastChapter TEXT, 
+            $columnCName TEXT,
+            $columnUpdateTime TEXT)
+          ''');
+        });
+  }
+
+// 插入一条书籍数据
+  Future<int> insert(Book book) async {
+    await this.openSqlite();
+    return await db.insert(tableBook, book.toMap());
+  }
+
+// 查找所有书籍信息
+  Future<List<Book>> queryAll() async {
+    await this.openSqlite();
+    List<Map> maps = await db.query(tableBook, columns: [
+      columnId,
+      columnPosition,
+      columnName,
+      columnAuthor,
+      columnImg,
+      columnDesc,
+      columnBookStatus,
+      columnLastChapterId,
+      columnLastChapter,
+      columnCName,
+      columnUpdateTime
+    ]);
+
+    if (maps == null || maps.length == 0) {
+      return null;
+    }
+
+    List<Book> books = [];
+    for (int i = 0; i < maps.length; i++) {
+      books.add(Book.fromMap(maps[i]));
+    }
+    return books;
+  }
+
+  Future<bool> queryBookIsAdd(int id) async {
+    await this.openSqlite();
+    List<Map> maps = await db.query(tableBook,
+        columns: [
+          columnId,
+          columnPosition,
+          columnName,
+          columnAuthor,
+          columnImg,
+          columnDesc,
+          columnBookStatus,
+          columnLastChapterId,
+          columnLastChapter,
+          columnCName,
+          columnUpdateTime
+        ],
+        where: '$columnId = ?',
+        whereArgs: [id]);
+    if (maps.length > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  // 根据ID查找书籍信息
+  Future<Book> getBook(int id) async {
+    await this.openSqlite();
+    List<Map> maps = await db.query(tableBook,
+        columns: [
+          columnId,
+          columnPosition,
+          columnName,
+          columnAuthor,
+          columnImg,
+          columnDesc,
+          columnBookStatus,
+          columnLastChapterId,
+          columnLastChapter,
+          columnCName,
+          columnUpdateTime
+        ],
+        where: '$columnId = ?',
+        whereArgs: [id]);
+    if (maps.length > 0) {
+      return Book.fromMap(maps.first);
+    }
+    return null;
+  }
+
+  // 根据ID删除书籍信息
+  Future<int> delete(int id) async {
+    await this.openSqlite();
+    return await db.delete(tableBook, where: '$columnId = ?', whereArgs: [id]);
+  }
+
+  // 更新书籍信息
+  Future<int> update(Book book) async {
+    await this.openSqlite();
+    print("更新${book.toMap()}");
+    return await db.update(tableBook, book.toMap(),
+        where: '$columnId = ?', whereArgs: [book.id]);
+  }
+
+  // 记得及时关闭数据库，防止内存泄漏
+  close() async {
+    await db.close();
   }
 }

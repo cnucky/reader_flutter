@@ -1,29 +1,33 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:reader_flutter/bean/book_list.dart';
+import 'package:reader_flutter/bean/list.dart';
+import 'package:reader_flutter/page/list_detail.dart';
 
 Widget bookListItem(BuildContext context, int index, BookList bookList) {
   return InkWell(
+    onTap: () {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) {
+        return ListDetailPage(bookList.ListId);
+      }));
+    },
     highlightColor: Colors.black12,
     child: Container(
-      height: 80.0,
+      height: 100.0,
       margin: EdgeInsets.all(5),
       child: Row(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(2.0),
-            child:
-                (bookList == null || bookList == null || bookList.Cover == "")
-                    ? Icon(
-                        Icons.book,
-                        size: 60,
-                        color: Colors.redAccent,
-                      )
-                    : Image.network(
-                        bookList.Cover,
-                        fit: BoxFit.cover,
-                        width: 50,
-                        height: 60,
-                      ),
+          Hero(
+            tag: bookList.ListId,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(2.0),
+              child: CachedNetworkImage(
+                imageUrl: bookList.Cover,
+                fit: BoxFit.cover,
+                width: 60,
+                height: 80,
+              ),
+            ),
           ),
           Expanded(
             child: Container(

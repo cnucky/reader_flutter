@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:reader_flutter/bean/banner.dart';
 import 'package:reader_flutter/bean/book.dart';
-import 'package:reader_flutter/http_manager.dart';
+import 'package:reader_flutter/util/http_manager.dart';
 import 'package:reader_flutter/view/banner.dart';
+import 'package:reader_flutter/view/load.dart';
 import 'package:reader_flutter/view/store_base.dart';
 
 class SexPage extends StatefulWidget {
-  String sex = "man";
+  final String sex;
 
   SexPage(this.sex);
 
@@ -79,18 +80,20 @@ class _SexPageState extends State<SexPage> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      child: ListView(
-        children: <Widget>[
-          bannerWidget(banners),
-          storeBase(context, "火热新书", hot),
-          storeBase(context, "热门连载", hotSerial),
-          storeBase(context, "重磅推荐", recommend),
-          storeBase(context, "完美精选", selected),
-        ],
-      ),
-      onRefresh: _onRefresh,
-    );
+    return banners.length == 0
+        ? LoadingPage()
+        : RefreshIndicator(
+            child: ListView(
+              children: <Widget>[
+                bannerWidget(context, banners),
+                storeBase(context, "火热新书", hot),
+                storeBase(context, "热门连载", hotSerial),
+                storeBase(context, "重磅推荐", recommend),
+                storeBase(context, "完美精选", selected),
+              ],
+            ),
+            onRefresh: _onRefresh,
+          );
   }
 
   @override

@@ -1,4 +1,4 @@
-import 'package:reader_flutter/util.dart';
+import 'package:reader_flutter/util/util.dart';
 
 /// ListId : 24119
 /// UserName : "19946785421"

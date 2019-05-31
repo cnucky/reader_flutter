@@ -25,14 +25,14 @@
 
 class MyBanner {
   String type;
-  String param;
+  int param;
   String imgurl;
 
   static MyBanner fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
     MyBanner dataBean = MyBanner();
     dataBean.type = map['type'];
-    dataBean.param = map['param'];
+    dataBean.param = int.parse(map['param']);
     dataBean.imgurl = map['imgurl'];
     return dataBean;
   }
