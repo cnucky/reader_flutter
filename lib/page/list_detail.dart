@@ -49,14 +49,25 @@ class _ListDetailPageState extends State<ListDetailPage> {
           : NestedScrollView(
               headerSliverBuilder: _sliverBuilder,
               body: SingleChildScrollView(
-                child: Column(children: [
-                  _desc(),
-                  Column(
-                    children: _books.map((book) {
-                      return bookItem(context, book, false);
-                    }).toList(),
-                  )
-                ]),
+                child: Column(
+                  children: [
+                    _desc(),
+                    ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      separatorBuilder: (BuildContext context, int index) {
+                        return new Divider(
+                          height: 1.0,
+                          color: Colors.black12,
+                        );
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        return bookItem(context, _books[index], false);
+                      },
+                      itemCount: _books.length,
+                    )
+                  ],
+                ),
               ),
             ),
     );

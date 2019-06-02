@@ -159,11 +159,17 @@ class _ListPageState extends State<ListPage>
                         moreInfo: "上次加载：%T",
                         showMore: true,
                       ),
-                      child: ListView.builder(
+                      child: ListView.separated(
                         controller: _scrollController,
                         itemBuilder: (BuildContext context, int index) {
                           return bookListItem(
                               context, index, _bookLists[index]);
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return new Divider(
+                            height: 1.0,
+                            color: Colors.black12,
+                          );
                         },
                         itemCount: _bookLists.length,
                       ),

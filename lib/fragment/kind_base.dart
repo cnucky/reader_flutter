@@ -85,11 +85,17 @@ class _CategoryKindBasePageState extends State<CategoryKindBasePage>
               moreInfo: "上次加载：%T",
               showMore: true,
             ),
-            child: ListView.builder(
+            child: ListView.separated(
               shrinkWrap: true,
               controller: _scrollController,
               itemBuilder: (BuildContext context, int index) {
                 return bookItem(context, _books[index], false);
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return new Divider(
+                  height: 1.0,
+                  color: Colors.black12,
+                );
               },
               itemCount: _books.length,
             ),

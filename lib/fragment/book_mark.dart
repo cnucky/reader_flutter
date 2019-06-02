@@ -131,9 +131,15 @@ class _BookMarkPageState extends State<BookMarkPage>
                 ),
               ),
             )
-          : ListView.builder(
+          : ListView.separated(
               itemBuilder: (BuildContext context, int index) {
                 return bookMarkItem(_bookMarks[index]);
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return new Divider(
+                  height: 1.0,
+                  color: Colors.black12,
+                );
               },
               itemCount: _bookMarks.length,
             ),

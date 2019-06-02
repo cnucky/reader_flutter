@@ -187,17 +187,17 @@ class _BookShelfState extends State<BookShelf>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("书架"),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(MyIcons.searchIcon),
-              onPressed: () {
-                Navigator.of(context).pushNamed('/search');
-              },
-            ),
-          ],
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("书架"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(MyIcons.searchIcon),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/search');
+            },
+          ),
+        ],
 //        leading: IconButton(
 //            icon: Icon(MyIcons.shelfUserIcon),
 //            onPressed: () {
@@ -206,29 +206,36 @@ class _BookShelfState extends State<BookShelf>
 //        actions: [
 //          IconButton(icon: Icon(MyIcons.shelfManageIcon), onPressed: () {}),
 //        ],
-        ),
-        body: _books.length == 0
-            ? Container(
-                child: Center(
-                  child: Text(
-                    "空空如也，也是一种态度",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w100,
-                      fontSize: 16.0,
-                    ),
+      ),
+      body: _books.length == 0
+          ? Container(
+              child: Center(
+                child: Text(
+                  "空空如也，也是一种态度",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w100,
+                    fontSize: 16.0,
                   ),
                 ),
-              )
-            : RefreshIndicator(
-                child: ListView.builder(
-                  itemBuilder: (BuildContext context, int index) {
-                    return bookShelfItem(_books[index]);
-                  },
-                  itemCount: _books.length,
-                ),
-                onRefresh: _onRefresh,
-              ));
+              ),
+            )
+          : RefreshIndicator(
+              child: ListView.separated(
+                itemBuilder: (BuildContext context, int index) {
+                  return bookShelfItem(_books[index]);
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return new Divider(
+                    height: 1.0,
+                    color: Colors.black12,
+                  );
+                },
+                itemCount: _books.length,
+              ),
+              onRefresh: _onRefresh,
+            ),
+    );
   }
 
   @override

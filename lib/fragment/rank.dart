@@ -66,7 +66,7 @@ class _BookRankState extends State<BookRank>
   Iterable<Widget> get _sexSelects sync* {
     for (String sex in _sexs) {
       yield Container(
-        margin: EdgeInsets.only(left: 10),
+        margin: EdgeInsets.only(right: 6.0),
         child: ChoiceChip(
           selectedColor: Colors.red,
           backgroundColor: Colors.blue,
@@ -96,7 +96,7 @@ class _BookRankState extends State<BookRank>
   Iterable<Widget> get _kindSelects sync* {
     for (String kind in _Kinds) {
       yield Container(
-        margin: EdgeInsets.only(left: 10),
+        margin: EdgeInsets.only(right: 6.0),
         child: ChoiceChip(
           selectedColor: Colors.red,
           backgroundColor: Colors.blue,
@@ -126,7 +126,7 @@ class _BookRankState extends State<BookRank>
   Iterable<Widget> get _timeSelects sync* {
     for (String time in _times) {
       yield Container(
-        margin: EdgeInsets.only(left: 10),
+        margin: EdgeInsets.only(right: 6.0),
         child: ChoiceChip(
           selectedColor: Colors.red,
           backgroundColor: Colors.blue,
@@ -198,10 +198,16 @@ class _BookRankState extends State<BookRank>
                   moreInfo: "上次加载：%T",
                   showMore: true,
                 ),
-                child: ListView.builder(
+                child: ListView.separated(
                   controller: _scrollController,
                   itemBuilder: (BuildContext context, int index) {
                     return bookItem(context, _books[index], false);
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return new Divider(
+                      height: 1.0,
+                      color: Colors.black12,
+                    );
                   },
                   itemCount: _books.length,
                 ),
@@ -222,6 +228,7 @@ class _BookRankState extends State<BookRank>
 
   Widget _choiceGroup() {
     return Container(
+      padding: EdgeInsets.only(left: 20.0, bottom: 10.0, top: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

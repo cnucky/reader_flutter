@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:reader_flutter/bean/book.dart';
 import 'package:reader_flutter/bean/info.dart';
 import 'package:reader_flutter/page/catalog.dart';
+import 'package:reader_flutter/page/comment.dart';
 import 'package:reader_flutter/page/read.dart';
 import 'package:reader_flutter/page/same_category_books.dart';
 import 'package:reader_flutter/page/same_uer_books.dart';
@@ -471,27 +472,31 @@ class _BookInfoState extends State<InfoPage>
       margin: EdgeInsets.only(bottom: 10),
       child: GestureDetector(
         onTap: () {
-          setState(() {});
+          Navigator.push(context,
+              MaterialPageRoute(builder: (BuildContext context) {
+            return CommentPage(_bookInfo);
+          }));
         },
         child: Card(
           elevation: 0,
           child: Container(
-              margin: EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "查看评论",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                    ),
+            margin: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "查看评论",
+                  style: TextStyle(
+                    fontSize: 16.0,
                   ),
-                  IconButton(
-                    icon: Icon(MyIcons.nextIcon),
-                    onPressed: () {},
-                  ),
-                ],
-              )),
+                ),
+                IconButton(
+                  icon: Icon(MyIcons.nextIcon),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

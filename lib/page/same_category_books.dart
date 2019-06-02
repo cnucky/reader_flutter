@@ -14,9 +14,15 @@ class SameCategoryBooksPage extends StatelessWidget {
         centerTitle: true,
         title: Text("同类型推荐"),
       ),
-      body: ListView.builder(
+      body: ListView.separated(
         itemBuilder: (BuildContext context, int index) {
           return sameCategoryBookItem(context, index, sameCategoryBooks[index]);
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return new Divider(
+            height: 1.0,
+            color: Colors.black12,
+          );
         },
         itemCount: sameCategoryBooks.length,
       ),
