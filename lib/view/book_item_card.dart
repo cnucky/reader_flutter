@@ -23,9 +23,6 @@ Widget bookItemCard(BuildContext context, Book book) {
                 imageUrl: book.img,
                 width: 80,
                 height: 100,
-                placeholder: (context, url) => CircularProgressIndicator(
-                      strokeWidth: 1,
-                    ),
               ),
             ),
             Container(

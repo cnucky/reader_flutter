@@ -11,7 +11,7 @@ class CategoryPage extends StatefulWidget {
 
 class _CategoryPageState extends State<CategoryPage>
     with AutomaticKeepAliveClientMixin {
-  List<MyCategory> categories = [];
+  List<MyCategory> _categories = [];
 
   @override
   void initState() {
@@ -21,7 +21,7 @@ class _CategoryPageState extends State<CategoryPage>
         if (map == null || map['data'].length == 0) {
         } else
           for (int i = 0; i < map['data'].length; i++) {
-            categories.add(MyCategory.fromMap(map['data'][i]));
+            _categories.add(MyCategory.fromMap(map['data'][i]));
           }
       });
     });
@@ -29,14 +29,28 @@ class _CategoryPageState extends State<CategoryPage>
 
   @override
   Widget build(BuildContext context) {
-    return categories.length == 0
+    return _categories.length == 0
         ? LoadingPage()
-        : ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              return categoryItem(context, index, categories[index]);
-            },
-            itemCount: categories.length,
+        : Container(
+            padding: EdgeInsets.all(20),
+            child: GridView.count(
+              shrinkWrap: true,
+              crossAxisCount: 3,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+              childAspectRatio: 1 / 1.3,
+              children: _categories.map((category) {
+                return categoryItem(
+                    context, _categories.indexOf(category), category);
+              }).toList(),
+            ),
           );
+//        : ListView.builder(
+//            itemBuilder: (BuildContext context, int index) {
+//              return categoryItem(context, index, categories[index]);
+//            },
+//            itemCount: categories.length,
+//          );
   }
 
   @override

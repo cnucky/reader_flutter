@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Reader',
       theme: ThemeData(
         primarySwatch: Colors.red,
-        primaryColor:Colors.red,
+        primaryColor: Colors.red,
         backgroundColor: Colors.white,
-        brightness:Brightness.light,
+        brightness: Brightness.light,
         platform: TargetPlatform.android,
       ),
       home: HomePage(),

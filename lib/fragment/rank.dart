@@ -68,6 +68,7 @@ class _BookRankState extends State<BookRank>
       yield Container(
         margin: EdgeInsets.only(right: 6.0),
         child: ChoiceChip(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
           selectedColor: Colors.red,
           backgroundColor: Colors.blue,
           label: Text(
@@ -77,15 +78,17 @@ class _BookRankState extends State<BookRank>
           ),
           selected: _curSex == sex,
           onSelected: (bool value) {
-            setState(() {
-              if (value) {
-                _curSex = sex;
-                _books.clear();
-                _curPage = 1;
-                _getRankData();
-                print(_curSex);
-              }
-            });
+            setState(
+              () {
+                if (value) {
+                  _curSex = sex;
+                  _books.clear();
+                  _curPage = 1;
+                  _getRankData();
+                  print(_curSex);
+                }
+              },
+            );
           },
         ),
       );
@@ -98,6 +101,7 @@ class _BookRankState extends State<BookRank>
       yield Container(
         margin: EdgeInsets.only(right: 6.0),
         child: ChoiceChip(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
           selectedColor: Colors.red,
           backgroundColor: Colors.blue,
           label: Text(
@@ -128,6 +132,7 @@ class _BookRankState extends State<BookRank>
       yield Container(
         margin: EdgeInsets.only(right: 6.0),
         child: ChoiceChip(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
           selectedColor: Colors.red,
           backgroundColor: Colors.blue,
           label: Text(

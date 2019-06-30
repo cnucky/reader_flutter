@@ -23,9 +23,6 @@ Widget commentItem(BuildContext context, CommentsBean comment) {
                   imageUrl: comment.passport.imgUrl,
                   width: 60,
                   height: 60,
-                  placeholder: (context, url) => CircularProgressIndicator(
-                        strokeWidth: 1,
-                      ),
                   errorWidget: (context, url, error) => new Icon(
                         Icons.account_circle,
                         size: 60,

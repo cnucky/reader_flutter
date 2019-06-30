@@ -99,9 +99,7 @@ class _BookInfoState extends State<InfoPage>
               Container(
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                    _bookInfo.Img,
-                  ),
+                  image: CachedNetworkImageProvider(_bookInfo.Img),
                   fit: BoxFit.cover,
                 )),
                 child: BackdropFilter(

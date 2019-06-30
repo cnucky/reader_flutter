@@ -216,13 +216,6 @@ class _ReadPageState extends State<ReadPage>
         switch (index) {
           case 0:
             Scaffold.of(context).openDrawer();
-//            Navigator.push(context,
-//                MaterialPageRoute(builder: (BuildContext context) {
-//              return CatalogPage(
-//                widget.bookId,
-//                callBack: (Chapter chapter) => onChange(chapter),
-//              );
-//            }));
             break;
           case 1:
             setState(() {
@@ -230,6 +223,12 @@ class _ReadPageState extends State<ReadPage>
             });
             break;
           case 2:
+            _isShowMenu = !_isShowMenu;
+            _isShowMenu
+                ? SystemChrome.setEnabledSystemUIOverlays(
+                    [SystemUiOverlay.top, SystemUiOverlay.bottom])
+                : SystemChrome.setEnabledSystemUIOverlays([]);
+            showSheet(context);
             break;
         }
       },
@@ -253,6 +252,237 @@ class _ReadPageState extends State<ReadPage>
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  showSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          color: _isDayMode
+              ? AppColors.DayModeMenuBgColor
+              : AppColors.NightModeMenuBgColor,
+          height: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              controlContentTextSize(),
+              controlTitleTextSize(),
+              controlLineHeight(),
+              controlLetterSpace(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget controlContentTextSize() {
+    return Container(
+      padding: EdgeInsets.only(left: 40, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              "正文字体",
+              style: TextStyle(
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+            ),
+            flex: 2,
+          ),
+          Expanded(
+            child: FlatButton(
+              child: Icon(
+                Icons.remove,
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _contentFontSize--;
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: FlatButton(
+              child: Icon(
+                Icons.add,
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _contentFontSize++;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget controlTitleTextSize() {
+    return Container(
+      padding: EdgeInsets.only(left: 40, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              "标题字体",
+              style: TextStyle(
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+            ),
+            flex: 2,
+          ),
+          Expanded(
+            child: FlatButton(
+              child: Icon(
+                Icons.remove,
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _titleFontSize--;
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: FlatButton(
+              child: Icon(
+                Icons.add,
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _titleFontSize++;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget controlLineHeight() {
+    return Container(
+      padding: EdgeInsets.only(left: 40, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              "行高",
+              style: TextStyle(
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+            ),
+            flex: 2,
+          ),
+          Expanded(
+            child: FlatButton(
+              child: Icon(
+                Icons.remove,
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _lineHeight--;
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: FlatButton(
+              child: Icon(
+                Icons.add,
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _lineHeight++;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget controlLetterSpace() {
+    return Container(
+      padding: EdgeInsets.only(left: 40, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              "间距",
+              style: TextStyle(
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+            ),
+            flex: 2,
+          ),
+          Expanded(
+            child: FlatButton(
+              child: Icon(
+                Icons.remove,
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _letterSpacing--;
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: FlatButton(
+              child: Icon(
+                Icons.add,
+                color: _isDayMode
+                    ? AppColors.DayModeIconTitleButtonColor
+                    : AppColors.NightModeIconTitleButtonColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _letterSpacing++;
+                });
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
